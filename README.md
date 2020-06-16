@@ -43,13 +43,9 @@ This repo contains the code
         - Siamese.py    : View Consistency Network
 
     - utils
-        - FID.py    : Evaluation metrics
-        - IS.py
-        - SSIM.py
-        - MIMICdataloader.py: Dataloaders
-        - OpeniDataSet.py
-        - create_csv_forMIMIC.py :Create Namelist for dataset
-        - create_csv_foropeni.py
+        - $Evaluation metrics$.py        : Compute evaluation metrics
+        - $DatasetName$DataSet.py        : Data loader
+        - create_csv_for$DatasetName$.py : Create Namelist for dataset
         - proprcessing.py
 
     - openi_report_$subset$.csv : Data-split for openi dataset
