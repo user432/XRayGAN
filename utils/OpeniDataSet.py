@@ -42,7 +42,6 @@ class OpeniDataset2(Dataset):
         self.impression = []
         self.image_L = []
         self.image_F = []
-        self.txt_len = []
         self.subject_ids = []
         print("Processing data.....")
         for index, row in tqdm(self.text_csv.iterrows()):
@@ -98,8 +97,7 @@ class OpeniDataset2(Dataset):
             'finding': torch.tensor(self.findings[idx],dtype=torch.long),
             'impression': torch.tensor(self.impression[idx],dtype=torch.long),
             'image_F': torch.tensor(chest_img_F,dtype=torch.float),
-            'image_L': torch.tensor(chest_img_L,dtype=torch.float),
-            'len': torch.tensor(self.txt_len[idx],dtype=torch.long)
+            'image_L': torch.tensor(chest_img_L,dtype=torch.float)
         }
         return sample
 

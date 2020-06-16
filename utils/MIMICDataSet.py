@@ -159,20 +159,33 @@ class MIMICDataset2_Hiachy(Dataset):
             idx = idx.tolist()
         subject_id = self.text_csv.iloc[idx].subject_id
         subject_report = self.report_csv[self.report_csv.study == subject_id].iloc[0]
-        raw_fi, raw_im = subject_report.findings.split(), subject_report.impression.split()
-        fi = [normalizeString(s) for s in raw_fi]
-        im = [normalizeString(s) for s in raw_im]
+        # Split report by sentences
+        raw_fi_sent, raw_im_sent = subject_report.findings.split('.'), subject_report.impression.split('.')
+        fi_sent = [normalizeSentence(s) for s in raw_fi_sent]
+        im_sent = [normalizeSentence(s) for s in raw_im_sent]
 
-        finding = [self.word_to_idx[w]+1 for w in fi]
-        impression = [self.word_to_idx[w]+1 for w in im]
+        txt_finding = []
+        txt_impression = []
 
-        txt_finding = np.array(finding)
-        text_len = len(txt_finding)
-        txt_finding = np.pad(txt_finding, (self.max_len_finding - text_len, 0), 'constant', constant_values=0)
+        for sen in fi_sent:
+            # print(sen)
+            txt_finding_sen = [self.word_to_idx[w] for w in sen.split()]
+            txt_finding_sen = np.pad(txt_finding_sen, (self.max_word_len_finding - len(txt_finding_sen), 0),
+                                     'constant', constant_values=0)
+            txt_finding.append(txt_finding_sen)
 
-        txt_impression = np.array(impression)
-        text_len = len(impression)
-        txt_impression = np.pad(txt_impression, (self.max_len_impression - text_len, 0), 'constant', constant_values=0)
+        for sen in im_sent:
+            txt_impression_sen = [self.word_to_idx[w] for w in sen.split()]
+            txt_impression_sen = np.pad(txt_impression_sen,
+                                        (self.max_word_len_impression - len(txt_impression_sen), 0), 'constant',
+                                        constant_values=0)
+            txt_impression.append(txt_impression_sen)
+
+        txt_impression = np.pad(np.array(txt_impression),
+                                ((self.max_len_impression - len(txt_impression), 0), (0, 0)), 'constant',
+                                constant_values=0)
+        txt_finding = np.pad(np.array(txt_finding), ((self.max_len_finding - len(txt_finding), 0), (0, 0)),
+                             'constant', constant_values=0)
 
         # Find the matching image for this report
         subject_imgs = self.img_csv[self.img_csv.subject_id == subject_id]
@@ -196,8 +209,7 @@ class MIMICDataset2_Hiachy(Dataset):
             'finding': torch.tensor(txt_finding,dtype=torch.long),
             'impression': torch.tensor(txt_impression,dtype=torch.long),
             'image_F': torch.tensor(chest_img_F,dtype=torch.float),
-            'image_L': torch.tensor(chest_img_L,dtype=torch.float),
-            'len': torch.tensor(text_len,dtype=torch.long)
+            'image_L': torch.tensor(chest_img_L,dtype=torch.float)
         }
         return sample
 
