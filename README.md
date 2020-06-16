@@ -6,6 +6,7 @@ This is the Pytorch implementaion of paper
 
 *Xingyi Yang, Nandiraju Gireesh, Eric Xing, Pengtao Xie*
 
+![arch](assets/arch.jpg)
 This repo contains the code
 1. Implement XRayGAN for X-ray generation from medical report
 2. Train/Evaluate on Open-i and MIMIC-p10 dataset
