@@ -84,7 +84,7 @@ We use two dataset:
     - Edit the config file for hyperparamter setting. Example:
     ```
         {
-      "EXPER_NAME":"Text-to-image Stack-WGAN-GP OPENI256",
+      "EXPER_NAME":"Text-to-image XRayGAN OPENI256",
       "ENCODER":"harchyENCODER",
       "DECODER":"baseDECODERv3",
       "DISCRIMINATOR":"PDISCRIMINATOR",
@@ -101,9 +101,9 @@ We use two dataset:
       "DATASET":"OPENI",
       "GPU_ID": "0,1,2,3",
       "DICTIONARY":"dict.json",
-      "CHECKPOINT_ENCODER": "./checkpoint/OPENI/Stack-WGAN-GP256/encoder",
-      "CHECKPOINT_DECODER": "./checkpoint/OPENI/Stack-WGAN-GP256/decoder",
-      "CHECKPOINT_D": "./checkpoint/OPENI/Stack-WGAN-GP256/D",
+      "CHECKPOINT_ENCODER": "./checkpoint/OPENI/XRayGAN/encoder",
+      "CHECKPOINT_DECODER": "./checkpoint/OPENI/XRayGAN/decoder",
+      "CHECKPOINT_D": "./checkpoint/OPENI/XRayGAN/D",
       "DATA_ROOT": "./data",
       "TEXT_CSV": "./config/openi_reports.csv",
       "IMG_CSV": "./config/openi_images.csv",
@@ -128,7 +128,7 @@ We use two dataset:
      - Edit the config file for checkoint path setting. Then Run the code to save the images to a foler. Example:
     ```
       {
-      "EXPER_NAME":"Text-to-image WGAN-GP256 Open-i",
+      "EXPER_NAME":"Text-to-image XRayGAN Open-i",
       "ENCODER":"harchyENCODER",
       "DECODER":"baseDECODERv3",
       "PDECODER":"PDECODERv3",
@@ -144,14 +144,11 @@ We use two dataset:
       "DATASET":"MIMIC-CXR",
       "GPU_ID": "0,1",
       "DICTIONARY":"dict.json",
-      "RESUME_ENCODER": "./checkpoint/MIMIC/WGAN-GP256/encoder/Encoder_harchyENCODER_epoch_140_checkpoint.pth",
-      "RESUME_DECODER_F": "./checkpoint/MIMIC/WGAN-GP256/decoder/Decoder_baseDECODERv3_F_epoch_140_checkpoint.pth",
-      "RESUME_DECODER_L": "./checkpoint/MIMIC/WGAN-GP256/decoder/Decoder_baseDECODERv3_L_epoch_140_checkpoint.pth",
+      "RESUME_ENCODER": "./checkpoint/OPENI/XRayGAN/encoder/Encoder_harchyENCODER_epoch_140_checkpoint.pth",
+      "RESUME_DECODER_F": "./checkpoint/OPENI/XRayGAN/decoder/Decoder_baseDECODERv3_F_epoch_140_checkpoint.pth",
+      "RESUME_DECODER_L": "./checkpoint/OPENI/XRayGAN/decoder/Decoder_baseDECODERv3_L_epoch_140_checkpoint.pth",
       "RESUME_D":"null",
 
-      "CHECKPOINT_ENCODER": "./checkpoint/OPENI/Progressive_biPatch_2D/encoder",
-      "CHECKPOINT_DECODER": "./checkpoint/OPENI/Progressive_biPatch_2D/decoder",
-      "CHECKPOINT_D": "./checkpoint/OPENI/Progressive_biPatch_2D/D",
       "DATA_ROOT": "./data",
       "TEXT_CSV": "./config/openi_reports.csv",
       "IMG_CSV": "./config/openi_images.csv",
