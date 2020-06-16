@@ -1,0 +1,41 @@
+{
+  "EXPER_NAME":"Text-to-image Stack-WGAN-GP MIMIC256",
+  "ENCODER":"harchyENCODER",
+  "DECODER":"baseDECODERv3",
+  "DISCRIMINATOR":"PDISCRIMINATOR",
+  "RNN_CELL":"LSTM",
+
+  "beta1" : 0.9,
+  "E_HIDEN_SIZE":128,
+  "E_EMBED_SIZE":128,
+
+  "D_CHANNEL_SIZE":512,
+
+  "DIS_CHANNEL_SIZE":64,
+
+  "DATASET":"MIMIC-CXR",
+  "GPU_ID": "0,1,2,3",
+   "RESUME_ENCODER": "null",
+  "RESUME_DECODER_F": "null",
+  "RESUME_DECODER_L": "null",
+  "RESUME_D":["null","null"],
+  "DICTIONARY":"dict_MIMIC.json",
+  "CHECKPOINT_ENCODER": "./checkpoint/MIMIC/Stack-WGAN-GP256/encoder",
+  "CHECKPOINT_DECODER": "./checkpoint/MIMIC/Stack-WGAN-GP256/decoder",
+  "CHECKPOINT_D": "./checkpoint/MIMIC/Stack-WGAN-GP256/D",
+  "DATA_ROOT": "./data",
+  "TEXT_CSV": "./config/MIMIC_p10_reports.csv",
+  "IMG_CSV": "./config/MIMIC_p10_images.csv",
+
+  "CONTENT_LOSS":"L2",
+  "ONLY_G_LR": 0.0002,
+  "IMAGE_SIZE":[256,256],
+  "BATCH_SIZE": 24,
+  "MAX_EPOCH": 150,
+  "LR_DECAY_EPOCH": [40,80],
+  "CHECKPOINT_EPOCH": 10,
+  "G_LR": 0.0001,
+  "D_LR": 0.0001,
+  "PIXEL_LOSS_RATIO":100,
+  "ADV_LOSS_RATIO":1
+}

@@ -1,0 +1,32 @@
+{
+  "EXPER_NAME":"Text-to-image WGAN-GP OPENI256 VCN",
+  "ENCODER":"harchyENCODER",
+  "DECODER":"baseDECODERv3",
+  "DISCRIMINATOR":"PDISCRIMINATOR",
+  "RNN_CELL":"LSTM",
+
+  "beta1" : 0.9,
+  "E_HIDEN_SIZE":128,
+  "E_EMBED_SIZE":128,
+
+  "D_CHANNEL_SIZE":512,
+
+  "DIS_CHANNEL_SIZE":64,
+
+  "DATASET":"OPENI",
+  "GPU_ID": "0,1,2,3",
+  "RESUME_ENCODER": "./checkpoint/OPENI/WGAN-GP256_VCN/encoder/Encoder_harchyENCODERv2_epoch_70_checkpoint.pth",
+  "RESUME_DECODER_F": "./checkpoint/OPENI/WGAN-GP256_VCN/decoder/Decoder_baseDECODERv3_F_epoch_70_checkpoint.pth",
+  "RESUME_DECODER_L": "./checkpoint/OPENI/WGAN-GP256_VCN/decoder/Decoder_baseDECODERv3_L_epoch_70_checkpoint.pth",
+  "RESUME_D":"null",
+  "DICTIONARY":"dict.json",
+  "CHECKPOINT_ENCODER": "./checkpoint/OPENI/WGAN-GP25/encoder",
+  "CHECKPOINT_DECODER": "./checkpoint/OPENI/WGAN-GP256/decoder",
+  "CHECKPOINT_D": "./checkpoint/OPENI/WGAN-GP256/D",
+  "DATA_ROOT": "../data",
+
+  "TEXT_CSV": "./config/openi_reports.csv",
+  "IMG_CSV": "./config/openi_images.csv",
+  "CONTENT_LOSS":"L2",
+  "IMAGE_SIZE":[256,256]
+}

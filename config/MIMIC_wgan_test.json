@@ -1,0 +1,31 @@
+{
+  "EXPER_NAME":"Text-to-image WGAN-GP256 MIMIC",
+  "ENCODER":"harchyENCODER",
+  "DECODER":"baseDECODERv3",
+  "PDECODER":"PDECODERv3",
+  "DISCRIMINATOR":"PDISCRIMINATOR",
+  "RNN_CELL":"LSTM",
+  "beta1" : 0.9,
+  "E_HIDEN_SIZE":128,
+  "E_EMBED_SIZE":128,
+
+  "D_CHANNEL_SIZE":512,
+
+  "DIS_CHANNEL_SIZE":64,
+  "DATASET":"MIMIC-CXR",
+  "GPU_ID": "0,1",
+  "DICTIONARY":"dict_MIMIC.json",
+  "RESUME_ENCODER": "./checkpoint/MIMIC/WGAN-GP256/encoder/Encoder_harchyENCODER_epoch_140_checkpoint.pth",
+  "RESUME_DECODER_F": "./checkpoint/MIMIC/WGAN-GP256/decoder/Decoder_baseDECODERv3_F_epoch_140_checkpoint.pth",
+  "RESUME_DECODER_L": "./checkpoint/MIMIC/WGAN-GP256/decoder/Decoder_baseDECODERv3_L_epoch_140_checkpoint.pth",
+  "RESUME_D":"null",
+
+  "CHECKPOINT_ENCODER": "./checkpoint/OPENI/Progressive_biPatch_2D/encoder",
+  "CHECKPOINT_DECODER": "./checkpoint/OPENI/Progressive_biPatch_2D/decoder",
+  "CHECKPOINT_D": "./checkpoint/OPENI/Progressive_biPatch_2D/D",
+  "DATA_ROOT": "./data",
+  "TEXT_CSV": "./config/MIMIC_p10_reports.csv",
+  "IMG_CSV": "./config/MIMIC_p10_images.csv",
+  "CONTENT_LOSS": "L2",
+  "IMAGE_SIZE":[256,256]
+}

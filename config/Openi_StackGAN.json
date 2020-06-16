@@ -1,0 +1,46 @@
+{
+  "EXPER_NAME":"Text-to-image Stack-WGAN-GP OPENI256",
+  "ENCODER":"harchyENCODER",
+  "DECODER":"baseDECODERv3",
+  "DISCRIMINATOR":"PDISCRIMINATOR",
+  "RNN_CELL":"LSTM",
+
+  "beta1" : 0.9,
+  "E_HIDEN_SIZE":128,
+  "E_EMBED_SIZE":128,
+
+  "D_CHANNEL_SIZE":512,
+
+  "DIS_CHANNEL_SIZE":64,
+
+  "DATASET":"OPENI",
+  "GPU_ID": "0,1,2,3",
+  "RESUME_ENCODER": "./checkpoint/OPENI/Stack-WGAN-GP256/encoder/Encoder_harchyENCODER_epoch_10_checkpoint.pth",
+  "RESUME_DECODER_F": "./checkpoint/OPENI/Stack-WGAN-GP256/decoder/Decoder_baseDECODERv3_F_epoch_10_checkpoint.pth",
+  "RESUME_DECODER_L": "./checkpoint/OPENI/Stack-WGAN-GP256/decoder/Decoder_baseDECODERv3_L_epoch_10_checkpoint.pth",
+  "RESUME_D":[["./checkpoint/OPENI/Stack-WGAN-GP256/D/D_PDISCRIMINATOR_F_epoch_10_layer_0_checkpoint.pth",
+                "./checkpoint/OPENI/Stack-WGAN-GP256/D/D_PDISCRIMINATOR_F_epoch_10_layer_1_checkpoint.pth",
+                "./checkpoint/OPENI/Stack-WGAN-GP256/D/D_PDISCRIMINATOR_F_epoch_10_layer_2_checkpoint.pth"],
+              ["./checkpoint/OPENI/Stack-WGAN-GP256/D/D_PDISCRIMINATOR_L_epoch_10_layer_0_checkpoint.pth",
+                "./checkpoint/OPENI/Stack-WGAN-GP256/D/D_PDISCRIMINATOR_L_epoch_10_layer_1_checkpoint.pth",
+                "./checkpoint/OPENI/Stack-WGAN-GP256/D/D_PDISCRIMINATOR_L_epoch_10_layer_2_checkpoint.pth"]],
+  "DICTIONARY":"dict.json",
+  "CHECKPOINT_ENCODER": "./checkpoint/OPENI/Stack-WGAN-GP256/encoder",
+  "CHECKPOINT_DECODER": "./checkpoint/OPENI/Stack-WGAN-GP256/decoder",
+  "CHECKPOINT_D": "./checkpoint/OPENI/Stack-WGAN-GP256/D",
+  "DATA_ROOT": "./data",
+  "TEXT_CSV": "./config/openi_reports.csv",
+  "IMG_CSV": "./config/openi_images.csv",
+
+  "CONTENT_LOSS":"L2",
+  "ONLY_G_LR": 0.0002,
+  "IMAGE_SIZE":[256,256],
+  "BATCH_SIZE": 24,
+  "MAX_EPOCH": 150,
+  "LR_DECAY_EPOCH": [40,80],
+  "CHECKPOINT_EPOCH": 10,
+  "G_LR": 0.0001,
+  "D_LR": 0.0001,
+  "PIXEL_LOSS_RATIO":100,
+  "ADV_LOSS_RATIO":1
+}

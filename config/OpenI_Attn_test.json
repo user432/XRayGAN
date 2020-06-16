@@ -1,0 +1,30 @@
+{
+  "EXPER_NAME":"Text-to-image AttnGAN OPENI256",
+  "ENCODER":"RNN_ENCODER",
+  "DECODER":"baseDECODERv3",
+  "DISCRIMINATOR":"PDISCRIMINATOR",
+  "RNN_CELL":"LSTM",
+
+  "beta1" : 0.9,
+  "E_HIDEN_SIZE":128,
+  "E_EMBED_SIZE":128,
+
+  "D_CHANNEL_SIZE":512,
+
+  "DIS_CHANNEL_SIZE":64,
+
+  "DATASET":"OPENI",
+  "GPU_ID": "0",
+  "RESUME_ENCODER": "./checkpoint/OPENI/AttnGAN-256/encoder/Encoder_RNN_ENCODER_epoch_140_checkpoint.pth",
+  "RESUME_DECODER_F": "./checkpoint/OPENI/AttnGAN-256/decoder/Decoder_baseDECODERv3_F_epoch_140_checkpoint.pth",
+  "RESUME_DECODER_L": "./checkpoint/OPENI/AttnGAN-256/decoder/Decoder_baseDECODERv3_L_epoch_140_checkpoint.pth",
+  "DICTIONARY":"dict.json",
+  "CHECKPOINT_ENCODER": "./checkpoint/OPENI/AttnGAN-256/encoder",
+  "CHECKPOINT_DECODER": "./checkpoint/OPENI/AttnGAN-256/decoder",
+  "CHECKPOINT_D": "./checkpoint/OPENI/AttnGAN-256/D",
+  "DATA_ROOT": "./data",
+  "TEXT_CSV": "./config/openi_reports.csv",
+  "IMG_CSV": "./config/openi_images.csv",
+  "CONTENT_LOSS":"L2",
+  "IMAGE_SIZE":[256,256]
+}
