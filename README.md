@@ -3,12 +3,12 @@
 This is the Pytorch implementaion of paper
 
 **XRayGAN: Consistency-preserving Generation of X-ray Images from Radiology Reports**
-
+*Xingyi Yang, Nandiraju Gireesh, Eric Xing, Pengtao Xie*
 This repo contains the code
 1. Implement XRayGAN for X-ray generation from medical report
-2. Train/Evaluate on Open-i and MIMIC dataset
+2. Train/Evaluate on Open-i and MIMIC-p10 dataset
 3. Compute SSIM, Inception sore, FID for GAN evaluation
-4. Re-implement of [AttnGAN](http://openaccess.thecvf.com/content_cvpr_2018/papers/Xu_AttnGAN_Fine-Grained_Text_CVPR_2018_paper.pdf), [StackGAN](http://openaccess.thecvf.com/content_ICCV_2017/papers/Zhang_StackGAN_Text_to_ICCV_2017_paper.pdf) and GAN-INT-CLS
+4. Re-implement of [AttnGAN](http://openaccess.thecvf.com/content_cvpr_2018/papers/Xu_AttnGAN_Fine-Grained_Text_CVPR_2018_paper.pdf), [StackGAN](http://openaccess.thecvf.com/content_ICCV_2017/papers/Zhang_StackGAN_Text_to_ICCV_2017_paper.pdf) and [GAN-INT-CLS](https://arxiv.org/pdf/1605.05396.pdf) for X-ray generation
 
 ## Dependency
   - pytorch=1.3.0
@@ -50,7 +50,7 @@ This repo contains the code
         - create_csv_foropeni.py
         - proprcessing.py
 
-    - openi_report_$subset$.csv : Data-split for openi dataset(MIMIC dataset is not shared for privacy concern)
+    - openi_report_$subset$.csv : Data-split for openi dataset
     - evaluate.py
     - tester_$ModelName$.py
     - trainer_$ModelName$.py
@@ -74,8 +74,10 @@ We use two dataset:
    ```
 ## Usage
 0. download checkpoint form google drive
-- https://drive.google.com/file/d/13iiT_kdMQzGA7t914VyEl0O_kql8Q1Y5/view?usp=sharing
-- https://drive.google.com/file/d/1pimDjLn1-emZM-EkBdoZTgg_VC6k_j3l/view?usp=sharing
+- XRayGAN checkpoint
+    - https://drive.google.com/file/d/13iiT_kdMQzGA7t914VyEl0O_kql8Q1Y5/view?usp=sharing
+- View consistency network checkpoint
+    - https://drive.google.com/file/d/1pimDjLn1-emZM-EkBdoZTgg_VC6k_j3l/view?usp=sharing
 1. Train you Generative model to generate X-rays
     - Edit the config file for hyperparamter setting. Example:
     ```
@@ -124,7 +126,7 @@ We use two dataset:
      - Edit the config file for checkoint path setting. Then Run the code to save the images to a foler. Example:
     ```
       {
-      "EXPER_NAME":"Text-to-image WGAN-GP256 MIMIC",
+      "EXPER_NAME":"Text-to-image WGAN-GP256 Open-i",
       "ENCODER":"harchyENCODER",
       "DECODER":"baseDECODERv3",
       "PDECODER":"PDECODERv3",
@@ -139,7 +141,7 @@ We use two dataset:
       "DIS_CHANNEL_SIZE":64,
       "DATASET":"MIMIC-CXR",
       "GPU_ID": "0,1",
-      "DICTIONARY":"dict_MIMIC.json",
+      "DICTIONARY":"dict.json",
       "RESUME_ENCODER": "./checkpoint/MIMIC/WGAN-GP256/encoder/Encoder_harchyENCODER_epoch_140_checkpoint.pth",
       "RESUME_DECODER_F": "./checkpoint/MIMIC/WGAN-GP256/decoder/Decoder_baseDECODERv3_F_epoch_140_checkpoint.pth",
       "RESUME_DECODER_L": "./checkpoint/MIMIC/WGAN-GP256/decoder/Decoder_baseDECODERv3_L_epoch_140_checkpoint.pth",
@@ -149,8 +151,8 @@ We use two dataset:
       "CHECKPOINT_DECODER": "./checkpoint/OPENI/Progressive_biPatch_2D/decoder",
       "CHECKPOINT_D": "./checkpoint/OPENI/Progressive_biPatch_2D/D",
       "DATA_ROOT": "./data",
-      "TEXT_CSV": "./config/MIMIC_p10_reports.csv",
-      "IMG_CSV": "./config/MIMIC_p10_images.csv",
+      "TEXT_CSV": "./config/openi_reports.csv",
+      "IMG_CSV": "./config/openi_images.csv",
       "CONTENT_LOSS": "L2",
       "IMAGE_SIZE":[256,256]
     }

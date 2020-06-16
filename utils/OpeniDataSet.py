@@ -132,7 +132,7 @@ class OpeniDataset2(Dataset):
         return word_to_idx, vocab_len, max_len_im,max_len_fi
 
 class OpeniDataset2_Hiachy(Dataset):
-    """Text-to-image dataset"""
+    """Biplane hierarchical Text-to-image dataset for Open-i"""
 
     def __init__(self,
                  csv_txt,
@@ -273,7 +273,7 @@ class OpeniDataset2_Hiachy(Dataset):
 
 
 class OpeniDataset_Siamese(Dataset):
-    """Text-to-image dataset"""
+    """View consistency dataset for Open-i"""
 
     def __init__(self,
                  csv_txt,

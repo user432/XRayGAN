@@ -10,64 +10,8 @@ import numpy as np
 import random
 import time
 
-class MIMICDataset(Dataset):
-    """Text-to-image dataset"""
-    def __init__(self, csv_txt, csv_img, root, transform=None):
-        """
-        Args:
-            csv_txt (string): Path to the csv file with Input txt.
-            cvs_img (string): Path to the csv file with Label Images.
-            transform (callable, optional): Optional transform to be applied
-                on a sample.
-        """
-        self.text_csv = pd.read_csv(csv_txt)
-        self.img_csv = pd.read_csv(csv_img)
-        self.root = root
-        self.transform = transform
-        self.word_to_idx, self.vocab_size, self.max_len = self.get_word_idx()
-    def __len__(self):
-        return len(self.text_csv)
-
-    def __getitem__(self, idx):
-        if torch.is_tensor(idx):
-            idx = idx.tolist()
-        subject_id = self.text_csv.iloc[idx, 1]
-        img_name = os.path.join(self.root,self.img_csv.iloc[idx,3])
-        chest_img = np.array(read_dcm(img_name))
-
-        txt_name = os.path.join(self.root,self.text_csv.iloc[idx, 2])
-        txt = np.array([self.word_to_idx[w]+1 for w in read_text(txt_name)])
-        txt = np.pad(txt,(0,self.max_len-len(txt)),'constant',constant_values=0)
-        sample = {'txt':txt,'image':chest_img}
-        if self.transform:
-            sample = self.transform(sample)
-        return sample
-
-    def get_word_idx(self):
-        print("Counting Vocabulary....")
-        wordbag = []
-        sen_len = []
-        for idx in tqdm(range(self.__len__())):
-            txt_name = os.path.join(self.root, self.text_csv.iloc[idx, 2])
-            txt_f = read_text(txt_name)
-            sen_len.append(len(txt_f))
-            wordbag = wordbag+txt_f
-        vocab = set(wordbag)
-        word_to_idx = {}
-        for i, word in enumerate(vocab):
-            if word in word_to_idx.keys():
-                pass
-            else:
-                word_to_idx[word]=i-1
-        vocab_len = len(word_to_idx.keys())
-        max_len = max(sen_len)
-        print("Totally {} medical report".format(self.__len__()))
-        print("Totally {} vocabulary".format(vocab_len))
-        print("Max sentence length {}".format(max_len))
-        return word_to_idx,vocab_len,max_len
-
 class MIMICDataset2(Dataset):
-    """Text-to-image dataset"""
+    """Biplane Text-to-image dataset for MIMIC"""
 
     def __init__(self,
                  csv_txt,
@@ -87,6 +31,117 @@ class MIMICDataset2(Dataset):
         self.img_csv = pd.read_csv(csv_img)
         self.report_csv = pd.read_csv(csv_report)
         print(self.report_csv.shape)
+        self.root = root
+        self.transform = transform
+        if os.path.exists(word_dict):
+            with open(word_dict) as f:
+                self.word_to_idx, self.vocab_size, self.max_len_impression, self.max_len_finding = json.load(f)
+        else:
+            self.word_to_idx, self.vocab_size, self.max_len_impression, self.max_len_finding = self.get_word_idx()
+            with open(word_dict,'w') as f:
+                json.dump([self.word_to_idx, self.vocab_size, self.max_len_impression, self.max_len_finding], f)
+    def __len__(self):
+        return len(self.text_csv)
+
+    def __getitem__(self, idx):
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+        subject_id = self.text_csv.iloc[idx].subject_id
+        subject_report = self.report_csv[self.report_csv.study == subject_id].iloc[0]
+        raw_fi, raw_im = subject_report.findings.split(), subject_report.impression.split()
+        fi = [normalizeString(s) for s in raw_fi]
+        im = [normalizeString(s) for s in raw_im]
+
+        finding = [self.word_to_idx[w]+1 for w in fi]
+        impression = [self.word_to_idx[w]+1 for w in im]
+
+        txt_finding = np.array(finding)
+        text_len = len(txt_finding)
+        txt_finding = np.pad(txt_finding, (self.max_len_finding - text_len, 0), 'constant', constant_values=0)
+
+        txt_impression = np.array(impression)
+        text_len = len(impression)
+        txt_impression = np.pad(txt_impression, (self.max_len_impression - text_len, 0), 'constant', constant_values=0)
+
+        # Find the matching image for this report
+        subject_imgs = self.img_csv[self.img_csv.subject_id == subject_id]
+
+        img_name_L = subject_imgs[subject_imgs.direction == 'L'].iloc[0]['path']
+        # For png data, load data and normalize
+        chest_img_L = np.array(read_png(img_name_L))
+
+        # Find the matching image for this report
+        img_name_F = subject_imgs[subject_imgs.direction == 'F'].iloc[0]['path']
+        # For png data, load data and normalize
+
+        chest_img_F = np.array(read_png(img_name_F))
+
+        if self.transform:
+            chest_img_F = self.transform(chest_img_F)
+            chest_img_L = self.transform(chest_img_L)
+
+        sample = {
+            'subject_id': torch.tensor(subject_id,dtype=torch.long),
+            'finding': torch.tensor(txt_finding,dtype=torch.long),
+            'impression': torch.tensor(txt_impression,dtype=torch.long),
+            'image_F': torch.tensor(chest_img_F,dtype=torch.float),
+            'image_L': torch.tensor(chest_img_L,dtype=torch.float),
+            'len': torch.tensor(text_len,dtype=torch.long)
+        }
+        return sample
+
+    def get_word_idx(self):
+        print("Counting Vocabulary....")
+        wordbag = []
+        sen_len_finding = []
+        sen_len_impression = []
+        for idx in tqdm(range(self.__len__())):
+            subject_id = self.text_csv.iloc[idx].subject_id
+            subject_report = self.report_csv[self.report_csv.study==subject_id].iloc[0]
+            raw_fi, raw_im =subject_report.findings.split(),subject_report.impression.split()
+            fi = [normalizeString(s) for s in raw_fi]
+            im = [normalizeString(s) for s in raw_im]
+            sen_len_finding.append(len(fi))
+            sen_len_impression.append(len(im))
+            wordbag = wordbag + fi + im
+        vocab = set(wordbag)
+        word_to_idx = {}
+        count = 0
+        for i, word in enumerate(vocab):
+            if word in word_to_idx.keys():
+                pass
+            else:
+                word_to_idx[word] = count
+                count += 1
+        vocab_len = count + 1
+        max_len_im,max_len_fi = max(sen_len_impression), max(sen_len_finding)
+        print("Totally {} medical report".format(self.__len__()))
+        print("Totally {} vocabulary".format(vocab_len))
+        print("Max Finding length {}".format(max_len_fi))
+        print("Max Impression length {}".format(max_len_im))
+        return word_to_idx, vocab_len, max_len_im,max_len_fi
+
+class MIMICDataset2_Hiachy(Dataset):
+    """Biplane hierarchical Text-to-image dataset for MIMIC"""
+
+    def __init__(self,
+                 csv_txt,
+                 csv_img,
+                 root,
+                 word_dict,
+                 transform=None):
+        """
+        Args:
+            csv_txt (string): Path to the csv file with Input txt.
+            cvs_img (string): Path to the csv file with Label Images.
+            transform (callable, optional): Optional transform to be applied
+                on a sample.
+        """
+        csv_report = '../MIMIC/physionet.org/files/mimic-cxr/2.0.0/files/mimic_cxr_sectioned.csv'
+        word_dict = 'hia_' + word_dict
+        self.text_csv = pd.read_csv(csv_txt)
+        self.img_csv = pd.read_csv(csv_img)
+        self.report_csv = pd.read_csv(csv_report)
         self.root = root
         self.transform = transform
         if os.path.exists(word_dict):
