@@ -111,14 +111,20 @@ We use two dataset:
       "CONTENT_LOSS":"L2",
       "ONLY_G_LR": 0.0002,
       "IMAGE_SIZE":[256,256],
-      "BATCH_SIZE": 24,
-      "MAX_EPOCH": 150,
-      "LR_DECAY_EPOCH": [40,80],
+      "BATCH_SIZE": [96,48,24,12],
+      "MAX_EPOCH": [90,90,120,120],
+      "SIAMESE_EPOCH": [15,15,15,20],
+      "G_initer": 1,
+      "D_initer": 1,
+      "LR_DECAY_EPOCH": [[45],[45,70],[45,70,90],[45,70,90]],
       "CHECKPOINT_EPOCH": 10,
-      "G_LR": 0.0001,
-      "D_LR": 0.0001,
+      "LR_SIAMESE_DECAY_EPOCH": 10,
+      "G_LR": [0.0003,0.0003,0.0002,0.0001],
+      "D_LR": [0.0003,0.0003,0.0002,0.0001],
+      "S_LR": 0.01,
       "PIXEL_LOSS_RATIO":100,
-      "ADV_LOSS_RATIO":1
+      "ADV_LOSS_RATIO":1,
+      "ID_LOSS_RATIO":1
     }
 
     ```
