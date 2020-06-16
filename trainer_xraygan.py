@@ -117,7 +117,14 @@ class Trainer:
                                                                  ToTensor()
                                                              ]))
 
-
+        self.sia_dataset = self.dataset[self.cfg["DATASET"]][1](csv_txt=self.text_csv,
+                                                                csv_img=self.img_csv,
+                                                                root=self.data_root,
+                                                                transform=transforms.Compose([
+                                                                    Rescale(self.image_size),
+                                                                    Equalize(),
+                                                                    ToTensor()
+                                                                ]))
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -128,9 +135,10 @@ class Trainer:
         #########################################
         ############ Loss Function ##############
         #########################################
-        content_losses = {"L2":nn.MSELoss(),
-                        "L1":nn.L1Loss()}
+        content_losses = {"L2": nn.MSELoss(),
+                          "L1": nn.L1Loss()}
         self.G_criterion = content_losses[self.cfg["CONTENT_LOSS"]].to(self.device)
+        self.S_criterion = nn.BCELoss().to(self.device)
 
         #########################################
         ############ Network Init ###############
@@ -146,6 +154,7 @@ class Trainer:
         self.encoder = nn.DataParallel(self.encoder,device_ids=self.gpus)
         self.decoder_L = nn.DataParallel(self.decoder_L,device_ids=self.gpus)
         self.decoder_F = nn.DataParallel(self.decoder_F, device_ids=self.gpus)
+        self.embednet = nn.DataParallel(self.embednet, device_ids=self.gpus)
         self.load_model()
 
     def define_nets(self):
@@ -189,6 +198,7 @@ class Trainer:
 
         self.decoder_L = MultiscaleDecoder(decoders_L).to(self.device)
 
+        self.embednet = Classifinet(backbone='resnet18').to(self.device)
 
 
     def define_dataloader(self,layer_id):
@@ -203,6 +213,12 @@ class Trainer:
                                            shuffle=True,
                                            num_workers=8,
                                             drop_last=False)
+        self.S_dataloader = DataLoader(self.sia_dataset,
+                                       batch_size=self.batch_size[layer_id],
+                                       shuffle=False,
+                                       num_workers=8,
+                                       pin_memory=True,
+                                       drop_last=False)
 
     def define_opt(self,layer_id):
         '''Define optimizer'''
@@ -218,7 +234,8 @@ class Trainer:
                                             , lr=self.cfg["D_LR"][layer_id],betas=(self.beta1, 0.999))
 
         self.D_lr_scheduler = MultiStepLR(self.D_optimizer, milestones=self.cfg["LR_DECAY_EPOCH"][layer_id], gamma=0.2)
-
+        self.S_optimizer = torch.optim.Adam(self.embednet.parameters(), lr=self.cfg["S_LR"], betas=(self.beta1, 0.999))
+        self.S_lr_scheduler = StepLR(self.S_optimizer, step_size=self.cfg["LR_SIAMESE_DECAY_EPOCH"], gamma=0.2)
 
 
     def check_create_checkpoint(self):
@@ -289,6 +306,66 @@ class Trainer:
         loss.backward()
         self.G_optimizer.step()
         return loss,pre_image,r_image
+
+
+    def train_Siamese_layer(self,layer_id):
+        DISP_FREQ = self.DISP_FREQs[layer_id]
+
+        for epoch in range(self.S_max_epoch[layer_id]):
+            self.embednet.train()
+            print('Generator Epoch [{}/{}]'.format(epoch,self.S_max_epoch[layer_id]))
+            for idx, batch in enumerate(tqdm(self.S_dataloader)):
+                image_f = batch['image_F'].to(self.device)
+                image_l = batch['image_L'].to(self.device)
+                label = batch['label'].to(self.device)
+
+                r_image_f = F.interpolate(image_f, size=(2 ** layer_id) * self.base_size)
+                r_image_l = F.interpolate(image_l, size=(2 ** layer_id) * self.base_size)
+
+                self.S_optimizer.zero_grad()
+                pred = self.embednet(r_image_f, r_image_l)
+                loss = self.S_criterion(pred, label)
+                loss.backward()
+                self.S_optimizer.step()
+
+                # if ((idx + 1) % DISP_FREQ == 0) and idx != 0:
+
+                self.writer.add_scalar('Train_Siamese {}_loss'.format(layer_id),
+                                       loss.item(),
+                                       epoch * len(self.S_dataloader) + idx)
+                self.writer.add_images("Train_front_{}_Original".format(layer_id),
+                                       deNorm(r_image_f),
+                                       epoch * len(self.S_dataloader) + idx)
+                self.writer.add_images("Train_lateral_{}_Original".format(layer_id),
+                                       deNorm(r_image_l),
+                                       epoch * len(self.S_dataloader) + idx)
+
+            self.S_lr_scheduler.step(epoch)
+
+            self.embednet.eval()
+            total = 0
+            correct = 0
+            for idx, batch in enumerate(tqdm(self.S_dataloader)):
+                image_f = batch['image_F'].to(self.device)
+                image_l = batch['image_L'].to(self.device)
+                label = batch['label'].to(self.device)
+                r_image_f = F.interpolate(image_f, size=(2 ** layer_id) * self.base_size)
+                r_image_l = F.interpolate(image_l, size=(2 ** layer_id) * self.base_size)
+
+                pred = self.embednet(r_image_f, r_image_l)
+                pred[pred>0.5]=1
+                pred[pred<=0.5]=0
+
+                total += pred.shape[0]
+                correct += torch.sum(pred==label).item()
+
+            acc = correct / total
+            # acc = self.evaluate_Siamese(layer_id)
+
+            print(print("Accuracy {}".format(acc)))
+            self.writer.add_scalar('Acc_Siamese_Layer {}'.format(layer_id),
+                                   acc,
+                                   epoch)
 
     def Loss_on_layer_GAN(self,image,finding, impression,layer_id,decoder,D):
         '''
@@ -395,6 +472,13 @@ class Trainer:
                 D_loss_f, G_loss_f, pre_image_f, image_f = self.Loss_on_layer_GAN(image_f, finding, impression, layer_id, self.decoder_F,self.D_F)
                 D_loss_l, G_loss_l, pre_image_l, image_l = self.Loss_on_layer_GAN(image_l, finding, impression, layer_id, self.decoder_L,self.D_L)
 
+                # train with view consistency loss
+                self.G_optimizer.zero_grad()
+                pred = self.embednet(pre_image_f,pre_image_l)
+                id_loss = self.id_loss_ratio * self.S_criterion(pred,torch.zeros_like(pred).to(self.device))
+                id_loss.backward()
+                self.G_optimizer.step()
+
                 if ((idx + 1) % DISP_FREQ == 0) and idx != 0:
                     # ...log the running loss
                     # self.writer.add_scalar("Train_{}_SSIM".format(layer_id), ssim.ssim(r_image, pre_image).item(),
@@ -458,6 +542,12 @@ class Trainer:
             self.define_D(layer_id)
             self.define_dataloader(layer_id)
             self.define_opt(layer_id)
+
+            #########################################################
+            ############### Train Siamese by layer ################
+            #########################################################
+            print("Star training on Siamese {}".format(layer_id))
+            self.train_Siamese_layer(layer_id)
 
             #########################################################
             ############### Train Generator by layer ################
