@@ -6,8 +6,8 @@ from models.Discriminator import SNDiscriminator, baseDiscriminator, noCon_Discr
     ResDiscriminator, PDiscriminator
 from torch import nn
 
-from utils.MIMICDataSet import MIMICDataset2
-from utils.OpeniDataSet import OpeniDataset2,OpeniDataset2_Hiachy
+from utils.MIMICDataSet import MIMICDataset2_Hiachy
+from utils.OpeniDataSet import OpeniDataset2_Hiachy
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms
 from utils import get_time, matplotlib_imshow, deNorm, Rescale, ToTensor, Equalize
@@ -63,7 +63,7 @@ class Tester:
         }
         self.dataset = {
             "OPENI": OpeniDataset2_Hiachy,
-            "MIMIC-CXR": MIMICDataset2
+            "MIMIC-CXR": MIMICDataset2_Hiachy
         }
 
         ##################################################
@@ -88,8 +88,7 @@ class Tester:
                                                                  Equalize(),
                                                                  ToTensor()
                                                              ]))
-        # self.test_len = len(self.t2i_dataset)
-        #
+
         self.testset = self.t2i_dataset
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

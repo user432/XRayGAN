@@ -1,5 +1,5 @@
 {
-  "EXPER_NAME":"Text-to-image WGAN-GP MIMIC",
+  "EXPER_NAME":"Text-to-image WGAN-GP MIMIC256",
   "ENCODER":"harchyENCODER",
   "DECODER":"baseDECODERv3",
   "DISCRIMINATOR":"PDISCRIMINATOR",

@@ -6,7 +6,7 @@ from models.Discriminator import SNDiscriminator, baseDiscriminator, noCon_Discr
 from models.tools import cal_gradient_penalty,init_weights
 from torch import nn
 from torch.nn.modules.distance import PairwiseDistance
-from utils.MIMICDataSet import MIMICDataset2, MIMICDataset_Siamese
+from utils.MIMICDataSet import MIMICDataset2_Hiachy, MIMICDataset_Siamese
 from utils.OpeniDataSet import OpeniDataset2_Hiachy,OpeniDataset_Siamese,OpeniDataset2
 from torch.utils.data import DataLoader,random_split
 from torchvision import transforms
@@ -80,7 +80,7 @@ class Trainer:
         }
         self.dataset = {
             "OPENI":[OpeniDataset2_Hiachy,OpeniDataset_Siamese],
-            "MIMIC-CXR":[MIMICDataset2, MIMICDataset_Siamese]
+            "MIMIC-CXR":[MIMICDataset2_Hiachy, MIMICDataset_Siamese]
         }
 
 
