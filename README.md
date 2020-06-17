@@ -76,6 +76,8 @@ We use two dataset:
 0. [**Optional**] Download checkpoint form google drive
 - XRayGAN checkpoint
     - https://drive.google.com/file/d/13iiT_kdMQzGA7t914VyEl0O_kql8Q1Y5/view?usp=sharing
+- CheXNet checkpoints
+    - https://drive.google.com/file/d/1gouomLG3R69BGsBtnHbTiSYOKv9jpt-A/view?usp=sharing
 - View consistency network checkpoint
     - https://drive.google.com/file/d/1pimDjLn1-emZM-EkBdoZTgg_VC6k_j3l/view?usp=sharing
 1. Train you Generative model to generate X-rays
