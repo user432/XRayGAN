@@ -73,7 +73,7 @@ We use two dataset:
         create_csv_forMIMIC.py
    ```
 ## Usage
-0. [**Optional**] Download checkpoint form google drive
+0. [**Optional**] Download checkpoint from google drive
 - XRayGAN checkpoint
     - https://drive.google.com/file/d/13iiT_kdMQzGA7t914VyEl0O_kql8Q1Y5/view?usp=sharing
 - CheXNet checkpoints
