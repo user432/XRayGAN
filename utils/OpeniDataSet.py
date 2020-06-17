@@ -289,26 +289,31 @@ class OpeniDataset_Siamese(Dataset):
         self.img_csv = pd.read_csv(csv_img)
         self.root = root
         self.transform = transform
+        self.image_L = []
+        self.image_F = []
+        print("Processing data.....")
+        for index, row in tqdm(self.text_csv.iterrows()):
+            subject_id = self.text_csv.iloc[index]['subject_id']
+            # Find the matching image for this report
+            subject_imgs = self.img_csv[self.img_csv.subject_id == subject_id]
+
+            img_name_L = subject_imgs[subject_imgs.direction == 'L'].iloc[0]['path']
+            # For png data, load data and normalize
+            self.image_L.append(img_name_L)
+
+            # Find the matching image for this report
+            img_name_F = subject_imgs[subject_imgs.direction == 'F'].iloc[0]['path']
+            # For png data, load data and normalize
+
+            self.image_F.append(img_name_F)
 
     def __len__(self):
         return len(self.text_csv)
 
-    def get_one_data(self,idx):
+    def get_one_data(self, idx):
 
-        subject_id = self.text_csv.iloc[idx]['subject_id']
-
-        # Find the matching image for this report
-        subject_imgs = self.img_csv[self.img_csv.subject_id == subject_id]
-
-        img_name_L = subject_imgs[subject_imgs.direction == 'L'].iloc[0]['path']
-        # For png data, load data and normalize
-        chest_img_L = np.array(read_png(img_name_L))
-
-        # Find the matching image for this report
-        img_name_F = subject_imgs[subject_imgs.direction == 'F'].iloc[0]['path']
-        # For png data, load data and normalize
-        chest_img_F = np.array(read_png(img_name_F))
-
+        chest_img_L = np.array(read_png(self.image_L[idx]))
+        chest_img_F = np.array(read_png(self.image_F[idx]))
         if self.transform:
             chest_img_F = self.transform(chest_img_F)
             chest_img_L = self.transform(chest_img_L)
@@ -335,6 +340,7 @@ class OpeniDataset_Siamese(Dataset):
         else:
             sample['label'] = torch.zeros(1).float()
         return sample
+
 
 
 
