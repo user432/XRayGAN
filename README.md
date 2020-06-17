@@ -170,3 +170,8 @@ We use two dataset:
         --path2 [path to the original images]
         --Sia_resume    [path to the VCN checkpoint]
     ```
+
+## Reference
+1. CheXNet: https://github.com/arnoweng/CheXNet
+2. StackGAN: https://github.com/hanzhanggit/StackGAN-v2
+3. AttnGAN: https://github.com/taoxugit/AttnGAN

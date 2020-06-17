@@ -313,7 +313,7 @@ class Trainer:
 
         for epoch in range(self.S_max_epoch[layer_id]):
             self.embednet.train()
-            print('Generator Epoch [{}/{}]'.format(epoch,self.S_max_epoch[layer_id]))
+            print('VCN Epoch [{}/{}]'.format(epoch, self.S_max_epoch[layer_id]))
             for idx, batch in enumerate(tqdm(self.S_dataloader)):
                 image_f = batch['image_F'].to(self.device)
                 image_l = batch['image_L'].to(self.device)
