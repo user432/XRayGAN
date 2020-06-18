@@ -31,10 +31,10 @@ This repo contains the code for:
     - config    : Configuration(Hyperparameter, path and dataset) for code running
         - $DatasetName$_$ModelName$.json        : Train Config
         - $DatasetName$_$ModelName$_test.json   : Test Config
-        - $DatasetName$_images.csv              : Name index of images
-        - $DatasetName$_reports.csv             : Name index of reports
 
     - datasplit
+        - $DatasetName$_images.csv              : Name index of images
+        - $DatasetName$_reports.csv             : Name index of reports
         - $DatasetName$_report_$subset$.csv :Data-split for openi and MIMIC-CXR dataset
 
     - models

@@ -25,6 +25,7 @@
   "DATA_ROOT": "../data",
   "TEXT_CSV": "./config/openi_reports.csv",
   "IMG_CSV": "./config/openi_images.csv",
+  "TEST_CSV": "./datasplit/openi_report_test.csv",
   "CONTENT_LOSS": "L2",
   "IMAGE_SIZE":[256,256]
 }

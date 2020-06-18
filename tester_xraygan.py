@@ -24,13 +24,14 @@ class Tester:
         self.cfg_json = "config/openi_progressive_hiach_test.json"
         self.cfg = self.pare_cfg(self.cfg_json)
         self.exp_name = self.cfg["EXPER_NAME"]
-        self.test_csv = 'openi_report_test.csv'
+        self.test_csv = self.cfg["TEST_CSV"]
         self.encoder_resume = self.cfg["RESUME_ENCODER"]
         self.decoder_resume_F = self.cfg["RESUME_DECODER_F"]
         self.decoder_resume_L = self.cfg["RESUME_DECODER_L"]
         self.word_dict = self.cfg["DICTIONARY"]
         self.text_csv = self.cfg["TEXT_CSV"]
         self.img_csv = self.cfg["IMG_CSV"]
+
         self.data_root = self.cfg["DATA_ROOT"]
         self.image_size = tuple(self.cfg["IMAGE_SIZE"])
         self.name = self.cfg["EXPER_NAME"]

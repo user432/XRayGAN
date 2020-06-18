@@ -35,9 +35,7 @@ class Tester:
         self.image_size = tuple(self.cfg["IMAGE_SIZE"])
         self.name = self.cfg["EXPER_NAME"]
         self.save_img_dir = './save_image/OPENI_WGAN-GP256_VCN'
-        self.train_csv = 'openi_report_train.csv'
-        self.val_csv = 'openi_report_val.csv'
-        self.test_csv = 'openi_report_test.csv'
+        self.test_csv = self.cfg["TEST_CSV"]
         if os.path.exists(self.save_img_dir)==False:
             os.mkdir(self.save_img_dir)
 

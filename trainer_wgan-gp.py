@@ -40,9 +40,9 @@ class Trainer:
         self.decoder_resume_L = self.cfg["RESUME_DECODER_L"]
         self.D_resume = self.cfg["RESUME_D"]
 
-        self.train_csv = 'openi_report_train.csv'
-        self.val_csv = 'openi_report_val.csv'
-        self.test_csv = 'openi_report_test.csv'
+        self.train_csv = self.cfg["TRAIN_CSV"]
+        self.val_csv = self.cfg["VAL_CSV"]
+        self.test_csv = self.cfg["TEST_CSV"]
 
         self.img_csv = self.cfg["IMG_CSV"]
         self.data_root = self.cfg["DATA_ROOT"]
@@ -413,12 +413,12 @@ class Trainer:
         #########################################################
         ############### Train Generator by layer ################
         #########################################################
-        print("Star training on Decoder")
+        print("Start training on Decoder")
         self.train_layer()
         #########################################################
         ################## Train GAN by layer ###################
         #########################################################
-        print("Star training GAN")
+        print("Start training GAN")
         self.train_GAN_layer()
 
 

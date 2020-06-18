@@ -24,8 +24,12 @@
   "CHECKPOINT_DECODER": "./checkpoint/MIMIC/Stack-WGAN-GP256/decoder",
   "CHECKPOINT_D": "./checkpoint/MIMIC/Stack-WGAN-GP256/D",
   "DATA_ROOT": "./data",
-  "TEXT_CSV": "./config/MIMIC_p10_reports.csv",
-  "IMG_CSV": "./config/MIMIC_p10_images.csv",
+  "TEXT_CSV": "./datasplit/MIMIC_p10_reports.csv",
+  "IMG_CSV": "./datasplit/MIMIC_p10_images.csv",
+
+  "TRAIN_CSV": "./datasplit/MIMIC_p10_report_train.csv",
+  "VAL_CSV": "./datasplit/MIMIC_p10_report_val.csv",
+  "TEST_CSV": "./datasplit/MIMIC_p10_report_test.csv",
 
   "CONTENT_LOSS":"L2",
   "ONLY_G_LR": 0.0002,

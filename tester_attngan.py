@@ -31,9 +31,8 @@ class Tester:
         self.data_root = self.cfg["DATA_ROOT"]
         self.image_size = tuple(self.cfg["IMAGE_SIZE"])
         self.name = self.cfg["EXPER_NAME"]
-        self.train_csv = 'openi_report_train.csv'
-        self.val_csv = 'openi_report_val.csv'
-        self.test_csv = 'openi_report_test.csv'
+
+        self.test_csv = self.cfg["TEST_CSV"]
         self.save_img_dir1 = './save_image/MIMIC_Attn256'
         self.save_img_dir2 = './save_image/MIMIC_origin'
 

@@ -23,8 +23,11 @@
   "CHECKPOINT_DECODER": "./checkpoint/MIMIC/AttnGAN-256/decoder",
   "CHECKPOINT_D": "./checkpoint/MIMIC/AttnGAN-256/D",
   "DATA_ROOT": "./data",
-  "TEXT_CSV": "./config/MIMIC_p10_reports.csv",
-  "IMG_CSV": "./config/MIMIC_p10_images.csv",
+  "TEXT_CSV": "./datasplit/MIMIC_p10_reports.csv",
+  "IMG_CSV": "./datasplit/MIMIC_p10_images.csv",
+
+  "TEST_CSV": "./datasplit/MIMIC_p10_report_test.csv",
+
   "CONTENT_LOSS":"L2",
   "IMAGE_SIZE":[256,256]
 }

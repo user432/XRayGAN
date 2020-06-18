@@ -32,9 +32,9 @@ class Trainer:
 
         self.D_checkpoint = self.cfg["CHECKPOINT_D"]
         self.check_create_checkpoint()
-        self.train_csv = 'openi_report_train.csv'
-        self.val_csv = 'openi_report_val.csv'
-        self.test_csv = 'openi_report_test.csv'
+        self.train_csv = self.cfg["TRAIN_CSV"]
+        self.val_csv = self.cfg["VAL_CSV"]
+        self.test_csv = self.cfg["TEST_CSV"]
         self.encoder_resume = self.cfg["RESUME_ENCODER"]
         self.decoder_resume_F = self.cfg["RESUME_DECODER_F"]
         self.decoder_resume_L = self.cfg["RESUME_DECODER_L"]
@@ -544,9 +544,9 @@ class Trainer:
             self.define_opt(layer_id)
 
             #########################################################
-            ############### Train Siamese by layer ################
+            ############### Train VCN by layer ################
             #########################################################
-            print("Star training on Siamese {}".format(layer_id))
+            print("Start training on Siamese {}".format(layer_id))
             self.train_Siamese_layer(layer_id)
 
             #########################################################
@@ -554,13 +554,13 @@ class Trainer:
             #########################################################
             if layer_id==0:
 
-                print("Star training on Decoder {}".format(layer_id))
+                print("Start training on Decoder {}".format(layer_id))
                 self.train_layer(layer_id)
 
             #########################################################
             ################## Train GAN by layer ###################
             #########################################################
-            print("Star training GAN {}".format(layer_id))
+            print("Start training GAN {}".format(layer_id))
             self.train_GAN_layer(layer_id)
 
 
