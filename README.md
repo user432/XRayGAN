@@ -1,6 +1,6 @@
 # XRayGAN: Consistency-preserving Generation of X-ray Images from Radiology Reports
 
-This is the Pytorch implementaion of paper
+This is the Pytorch implementaion of the paper:
 
 **XRayGAN: Consistency-preserving Generation of X-ray Images from Radiology Reports**
 
@@ -8,13 +8,13 @@ This is the Pytorch implementaion of paper
 
 ![arch](assets/arch.jpg)
 
-This repo contains the code
-1. Implement XRayGAN for X-ray generation from medical report
-2. Train/Evaluate on Open-i and MIMIC-p10 dataset
+This repo contains the code for:
+1. The Implemention of XRayGAN for X-ray generation from medical report
+2. Training & Evaluation on Open-i and MIMIC-p10 dataset
 3. Compute SSIM, Inception sore, FID for GAN evaluation
-4. Re-implement of [AttnGAN](http://openaccess.thecvf.com/content_cvpr_2018/papers/Xu_AttnGAN_Fine-Grained_Text_CVPR_2018_paper.pdf), [StackGAN](http://openaccess.thecvf.com/content_ICCV_2017/papers/Zhang_StackGAN_Text_to_ICCV_2017_paper.pdf) and [GAN-INT-CLS](https://arxiv.org/pdf/1605.05396.pdf) for X-ray generation
+4. Re-implemention of [AttnGAN](http://openaccess.thecvf.com/content_cvpr_2018/papers/Xu_AttnGAN_Fine-Grained_Text_CVPR_2018_paper.pdf), [StackGAN](http://openaccess.thecvf.com/content_ICCV_2017/papers/Zhang_StackGAN_Text_to_ICCV_2017_paper.pdf) and [GAN-INT-CLS](https://arxiv.org/pdf/1605.05396.pdf) for X-ray generation
 
-## Dependency
+## Dependencies
   - pytorch=1.3.0
   - torchvision
   - pydicom
@@ -58,32 +58,32 @@ This repo contains the code
 ```
 
 ## Dataset
-We use two dataset:
+We use two datasets:
 1. [Open-i](https://openi.nlm.nih.gov/faq#collection)
-   - Download the compress file, uncompress it
-   - Create name list for it using
+   - Download the compressed tar file, uncompress it ./data folder
+   - Create a name list for it using,
    ```
         python create_csv_foropeni.py
    ```
 2. [MIMIC-CXR](https://mimic.physionet.org/)
-   - To access MIMIC-CXR, you need first sign angreement on the official website
-   - Download the compress file, uncompress it
-   - Create name list for it using
+   - To access MIMIC-CXR, you need to first sign an agreement on the official website
+   - Download the compressed tar file, uncompress it ./data folder
+   - Create a name list for it using,
    ```
-        create_csv_forMIMIC.py
+        python create_csv_forMIMIC.py
    ```
 ## Usage
-0. [**Optional**] Download checkpoint from google drive
+0. [**Optional**] Download checkpoints from google drive
 - XRayGAN checkpoint
     - https://drive.google.com/file/d/13iiT_kdMQzGA7t914VyEl0O_kql8Q1Y5/view?usp=sharing
 - CheXNet checkpoints
     - https://drive.google.com/file/d/1gouomLG3R69BGsBtnHbTiSYOKv9jpt-A/view?usp=sharing
 - View consistency network checkpoint
     - https://drive.google.com/file/d/1pimDjLn1-emZM-EkBdoZTgg_VC6k_j3l/view?usp=sharing
-1. Train you Generative model to generate X-rays
+1. Train your Generative model to generate X-rays
     - Edit the config file for hyperparamter setting. Example:
     ```
-        {
+      {
       "EXPER_NAME":"Text-to-image XRayGAN OPENI256",
       "ENCODER":"harchyENCODER",
       "DECODER":"baseDECODERv3",
@@ -130,8 +130,8 @@ We use two dataset:
     ```
     - Run the trainer that you want(Checkpoint, Tensorboard record will be automaticaly saved)
 
-2. Test you model to generate Xrays
-     - Edit the config file for checkoint path setting. Then Run the code to save the images to a foler. Example:
+2. Test your model to generate Xrays
+     - Edit the config file for checkpoint path setting. Then Run the code to save the images to a folder. Example:
     ```
       {
       "EXPER_NAME":"Text-to-image XRayGAN Open-i",
@@ -163,7 +163,7 @@ We use two dataset:
     }
     ```
 
-3. Evaluate. We provide the evaluation code. Just save the generated images and original image in two folder. Then Run
+3. Evaluation. We have provided the code for evaluation. Just save the generated images and original images in two seperated folders. Then Run
     ```
         python evaluate.py\
         --path1 [path to the generated images]
@@ -171,7 +171,7 @@ We use two dataset:
         --Sia_resume    [path to the VCN checkpoint]
     ```
 
-## Reference
+## References
 1. CheXNet: https://github.com/arnoweng/CheXNet
 2. StackGAN: https://github.com/hanzhanggit/StackGAN-v2
 3. AttnGAN: https://github.com/taoxugit/AttnGAN
