@@ -34,6 +34,8 @@ This repo contains the code for:
         - $DatasetName$_images.csv              : Name index of images
         - $DatasetName$_reports.csv             : Name index of reports
 
+    - datasplit
+        - $DatasetName$_report_$subset$.csv :Data-split for openi and MIMIC-CXR dataset
 
     - models
         - AttnGAN.py    : Reimplementation of AttnGAN
@@ -50,7 +52,6 @@ This repo contains the code for:
         - create_csv_for$DatasetName$.py : Create Namelist for dataset
         - proprcessing.py
 
-    - openi_report_$subset$.csv : Data-split for openi dataset
     - evaluate.py
     - tester_$ModelName$.py
     - trainer_$ModelName$.py
