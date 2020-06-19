@@ -49,7 +49,7 @@ class Trainer:
 
         self.pix_loss_ratio = self.cfg["PIXEL_LOSS_RATIO"]
         self.adv_loss_ratio = self.cfg["ADV_LOSS_RATIO"]
-        self.id_loss_ratio = self.cfg["ID_LOSS_RATIO"]
+        self.vc_loss_ratio = self.cfg["VC_LOSS_RATIO"]
 
         self.checkpoint_epoch = self.cfg["CHECKPOINT_EPOCH"]
         self.G_step = self.cfg["G_initer"]
@@ -478,7 +478,7 @@ class Trainer:
                 # train with view consistency loss
                 self.G_optimizer.zero_grad()
                 pred = self.embednet(pre_image_f,pre_image_l)
-                id_loss = self.id_loss_ratio * self.S_criterion(pred,torch.zeros_like(pred).to(self.device))
+                id_loss = self.vc_loss_ratio * self.S_criterion(pred,torch.zeros_like(pred).to(self.device))
                 id_loss.backward()
                 self.G_optimizer.step()
 
