@@ -6,6 +6,8 @@ This is the Pytorch implementaion of the paper:
 
 *Xingyi Yang, Nandiraju Gireesh, Eric Xing, Pengtao Xie*
 
+[paper](https://arxiv.org/abs/2006.10552)
+
 ![arch](assets/arch.jpg)
 
 This repo contains the code for:
@@ -171,6 +173,17 @@ We use two datasets:
         --path2 [path to the original images]
         --Sia_resume    [path to the VCN checkpoint]
     ```
+## Citation
+```
+@misc{yang2020xraygan,
+    title={XRayGAN: Consistency-preserving Generation of X-ray Images from Radiology Reports},
+    author={Xingyi Yang and Nandiraju Gireesh and Eric Xing and Pengtao Xie},
+    year={2020},
+    eprint={2006.10552},
+    archivePrefix={arXiv},
+    primaryClass={eess.IV}
+}
+```
 
 ## References
 1. CheXNet: https://github.com/arnoweng/CheXNet
