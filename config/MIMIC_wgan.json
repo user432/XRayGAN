@@ -1,6 +1,6 @@
 {
   "EXPER_NAME":"Text-to-image WGAN-GP MIMIC256",
-  "ENCODER":"harchyENCODER",
+  "ENCODER":"HAttnEncoder",
   "DECODER":"baseDECODERv3",
   "DISCRIMINATOR":"PDISCRIMINATOR",
   "RNN_CELL":"LSTM",

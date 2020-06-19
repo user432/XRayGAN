@@ -1,7 +1,7 @@
 
 {
   "EXPER_NAME":"Text-to-image Progressive XRayGAN MIMIC",
-  "ENCODER":"harchyENCODER",
+  "ENCODER":"HAttnEncoder",
   "DECODER":"baseDECODERv3",
   "PDECODER":"PDECODERv3",
   "DISCRIMINATOR":"PDISCRIMINATOR",

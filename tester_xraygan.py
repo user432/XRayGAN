@@ -40,9 +40,7 @@ class Tester:
             os.mkdir(self.save_img_dir)
 
         self.ENCODERS = {
-            "baseENCODER": baseEncoder,
-            "baseENCODERv2": baseEncoderv2,
-            "harchyENCODER": harchyEncoder
+            "HAttnEncoder": HAttnEncoder
         }
         self.DECODERS = {
             "baseDECODER": baseDecoder,

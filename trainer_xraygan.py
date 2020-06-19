@@ -1,6 +1,6 @@
 import torch
 import json
-from models.Encoder import HAttnEncoder,HAttnEncoderv2,HAttnEncoderv3,HAttnEncoderv4,plainEncoder,harchyEncoderv2, harchyEncoderv3
+from models.Encoder import HAttnEncoder
 from models.Decoder import baseDecoder,PDecoderv2,baseDecoderv2,PDecoder,baseDecoderv3,MultiscaleDecoder,PDecoderv3
 from models.Discriminator import SNDiscriminator, baseDiscriminator, noCon_Discriminator, PatchDiscriminator, ResDiscriminator, PDiscriminator
 from models.tools import cal_gradient_penalty,init_weights
@@ -60,10 +60,13 @@ class Trainer:
         self.lambda_gp = [10.0,10.0,10.0,10.0]
         self.writer = SummaryWriter(os.path.join("runs",self.exp_name))
 
+        self.ENCODERS= {
+            "HAttnEncoder": HAttnEncoder
+        }
         self.DECODERS = {
             "baseDECODER":baseDecoder,
             "baseDECODERv2": baseDecoderv2,
-            "baseDECODERv3": baseDecoderv3
+            "baseDECODERv3": baseDecoderv3,
         }
         self.P_DECODER = {
             "PDECODER":PDecoder,
@@ -159,7 +162,7 @@ class Trainer:
 
     def define_nets(self):
 
-        self.encoder = HAttnEncoderv3(vocab_size=self.t2i_dataset.vocab_size,
+        self.encoder = self.ENCODERS[self.cfg["ENCODER"]](vocab_size=self.t2i_dataset.vocab_size,
                                                           embed_size=self.cfg["E_EMBED_SIZE"],
                                                           hidden_size=self.cfg["E_HIDEN_SIZE"],
                                                           max_len=[self.t2i_dataset.max_len_finding,

@@ -76,7 +76,7 @@ class HAttnEncoder(nn.Module):
              dropout=0.5,
              bidirection=True,
              unit="RNN"):
-        super(HAttnEncoderv3, self).__init__()
+        super(HAttnEncoder, self).__init__()
         self.vocab_size = vocab_size
         self.hidden_size = hidden_size
         self.embed_size = embed_size

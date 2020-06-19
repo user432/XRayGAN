@@ -1,6 +1,6 @@
 import torch
 import json
-from models.Encoder import baseEncoder, baseEncoderv2, harchyEncoder, harchyEncoderv2
+from models.Encoder import HAttnEncoder
 from models.Decoder import baseDecoder, PDecoderv2, baseDecoderv2, PDecoder,PDecoderv3, baseDecoderv3, MultiscaleDecoder
 from models.Discriminator import SNDiscriminator, baseDiscriminator, noCon_Discriminator, PatchDiscriminator, \
     ResDiscriminator, PDiscriminator
@@ -40,10 +40,7 @@ class Tester:
             os.mkdir(self.save_img_dir)
 
         self.ENCODERS = {
-            "baseENCODER": baseEncoder,
-            "baseENCODERv2": baseEncoderv2,
-            "harchyENCODER": harchyEncoder,
-            "harchyENCODERv2": harchyEncoderv2
+            "HAttnEncoder":HAttnEncoder
         }
         self.DECODERS = {
             "baseDECODER": baseDecoder,

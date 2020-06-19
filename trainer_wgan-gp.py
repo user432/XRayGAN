@@ -1,6 +1,6 @@
 import torch
 import json
-from models.Encoder import baseEncoder, baseEncoderv2, harchyEncoder
+from models.Encoder import HAttnEncoder
 from models.Decoder import baseDecoder, baseDecoderv2,  baseDecoderv3
 
 from models.Discriminator import SNDiscriminator, baseDiscriminator, noCon_Discriminator, PatchDiscriminator, \
@@ -57,9 +57,7 @@ class Trainer:
         self.word_dict = self.cfg["DICTIONARY"]
         self.writer = SummaryWriter(os.path.join("runs", self.exp_name))
         self.ENCODERS = {
-            "baseENCODER": baseEncoder,
-            "baseENCODERv2": baseEncoderv2,
-            "harchyENCODER": harchyEncoder
+             "HAttnEncoder": HAttnEncoder,
         }
         self.DECODERS = {
             "baseDECODER": baseDecoder,
