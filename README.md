@@ -175,13 +175,11 @@ We use two datasets:
     ```
 ## Citation
 ```
-@misc{yang2020xraygan,
-    title={XRayGAN: Consistency-preserving Generation of X-ray Images from Radiology Reports},
-    author={Xingyi Yang and Nandiraju Gireesh and Eric Xing and Pengtao Xie},
-    year={2020},
-    eprint={2006.10552},
-    archivePrefix={arXiv},
-    primaryClass={eess.IV}
+@article{yang2020xraygan,
+  title={XRayGAN: Consistency-preserving Generation of X-ray Images from Radiology Reports},
+  author={Yang, Xingyi and Gireesh, Nandiraju and Xing, Eric and Xie, Pengtao},
+  journal={arXiv preprint arXiv:2006.10552},
+  year={2020}
 }
 ```
 
